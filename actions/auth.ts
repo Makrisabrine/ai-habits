@@ -1,6 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { getDb } from "@/lib/mongo";
@@ -114,6 +115,17 @@ export async function updatePassword(_prev: FormState, form: FormData): Promise<
 
   revalidatePath("/", "layout");
   redirect("/habits");
+}
+
+export async function signInWithGoogle() {
+  const origin = (await headers()).get("origin");
+  const supabase = await createClient();
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: "google",
+    options: { redirectTo: `${origin}/auth/confirm` },
+  });
+  if (error || !data.url) redirect("/login?error=google");
+  redirect(data.url);
 }
 
 export async function signOut() {

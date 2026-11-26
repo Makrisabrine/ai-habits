@@ -25,7 +25,9 @@ export default async function LoginPage({
       )}
       {error && (
         <p className="mb-4 rounded-xl border border-red-400/30 bg-red-950/40 px-4 py-3 text-sm text-red-200">
-          Lien invalide ou expiré. Recommence l&apos;opération.
+          {error === "google"
+            ? "Connexion Google impossible pour le moment. Réessaie ou utilise ton email."
+            : "Lien invalide ou expiré. Recommence l'opération."}
         </p>
       )}
       <Card>

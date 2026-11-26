@@ -1,10 +1,12 @@
 "use client";
 
 import { useActionState, useState } from "react";
+import { useFormStatus } from "react-dom";
 import Link from "next/link";
 import {
   requestPasswordReset,
   signIn,
+  signInWithGoogle,
   signUp,
   updatePassword,
   verifyLoginOtp,
@@ -53,6 +55,15 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
   const [state, formAction, pending] = useActionState<FormState, FormData>(action, undefined);
 
   return (
+    <>
+    <form action={signInWithGoogle}>
+      <GoogleButton />
+    </form>
+    <div className="my-5 flex items-center gap-3 text-xs text-slate-400">
+      <span className="h-px flex-1 bg-brand-100" />
+      ou avec ton email
+      <span className="h-px flex-1 bg-brand-100" />
+    </div>
     <form action={formAction} className="space-y-4">
       {mode === "signup" && (
         <Field name="name" label="Prénom" type="text" placeholder="Azer" autoComplete="given-name" />
@@ -99,6 +110,26 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
         )}
       </p>
     </form>
+    </>
+  );
+}
+
+function GoogleButton() {
+  const { pending } = useFormStatus();
+  return (
+    <button
+      type="submit"
+      disabled={pending}
+      className="flex w-full items-center justify-center gap-3 rounded-xl border border-brand-100 bg-white px-4 py-3 font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-50"
+    >
+      <svg aria-hidden="true" width="18" height="18" viewBox="0 0 48 48">
+        <path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.6 5.4 2.6 13.2l7.9 6.2C12.4 13.6 17.7 9.5 24 9.5z" />
+        <path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.7 6C44.1 38 46.5 31.8 46.5 24.5z" />
+        <path fill="#FBBC05" d="M10.5 28.6c-.5-1.4-.8-3-.8-4.6s.3-3.2.8-4.6l-7.9-6.2C.9 16.6 0 20.2 0 24s.9 7.4 2.6 10.8l7.9-6.2z" />
+        <path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.7-6c-2.2 1.5-5 2.3-8.2 2.3-6.3 0-11.6-4.1-13.5-9.8l-7.9 6.2C6.6 42.6 14.6 48 24 48z" />
+      </svg>
+      {pending ? "..." : "Continuer avec Google"}
+    </button>
   );
 }
 
