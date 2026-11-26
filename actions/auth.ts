@@ -50,8 +50,27 @@ export async function signIn(_prev: FormState, form: FormData): Promise<FormStat
 
   const supabase = await createClient();
   const { error } = await supabase.auth.signInWithPassword({ email, password });
-
   if (error) return { error: error.message };
+
+  // 2e facteur : on jette la session mot de passe, seule la session issue de l'OTP compte.
+  await supabase.auth.signOut({ scope: "local" });
+  const { error: otpError } = await supabase.auth.signInWithOtp({
+    email,
+    options: { shouldCreateUser: false },
+  });
+  if (otpError) return { error: otpError.message };
+
+  redirect(`/login/otp?email=${encodeURIComponent(email)}`);
+}
+
+export async function verifyLoginOtp(_prev: FormState, form: FormData): Promise<FormState> {
+  const email = String(form.get("email") ?? "").trim();
+  const token = String(form.get("token") ?? "").trim();
+  if (!email || !/^\d{6,10}$/.test(token)) return { error: "Code invalide." };
+
+  const supabase = await createClient();
+  const { error } = await supabase.auth.verifyOtp({ email, token, type: "email" });
+  if (error) return { error: "Code invalide ou expiré." };
 
   revalidatePath("/", "layout");
   redirect("/habits");
