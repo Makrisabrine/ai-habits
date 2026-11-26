@@ -6,10 +6,10 @@ import { getUser } from "@/lib/auth";
 export default async function LoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ check?: string }>;
+  searchParams: Promise<{ check?: string; error?: string }>;
 }) {
   if (await getUser()) redirect("/habits");
-  const { check } = await searchParams;
+  const { check, error } = await searchParams;
 
   return (
     <div className="mx-auto max-w-md">
@@ -21,6 +21,11 @@ export default async function LoginPage({
       {check && (
         <p className="mb-4 rounded-xl border border-amber-400/30 bg-amber-950/40 px-4 py-3 text-sm text-amber-200">
           Compte créé. Vérifie ta boîte mail pour confirmer, puis connecte-toi.
+        </p>
+      )}
+      {error && (
+        <p className="mb-4 rounded-xl border border-red-400/30 bg-red-950/40 px-4 py-3 text-sm text-red-200">
+          Lien invalide ou expiré. Recommence l&apos;opération.
         </p>
       )}
       <Card>

@@ -1,0 +1,24 @@
+import { NextResponse, type NextRequest } from "next/server";
+import type { EmailOtpType } from "@supabase/supabase-js";
+import { createClient } from "@/lib/supabase/server";
+
+/**
+ * Cible des liens email (templates Supabase "Confirm signup" et "Reset Password") :
+ * {{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=email|recovery
+ */
+export async function GET(request: NextRequest) {
+  const { searchParams } = request.nextUrl;
+  const token_hash = searchParams.get("token_hash");
+  const type = searchParams.get("type") as EmailOtpType | null;
+
+  if (token_hash && type) {
+    const supabase = await createClient();
+    const { error } = await supabase.auth.verifyOtp({ type, token_hash });
+    if (!error) {
+      const next = type === "recovery" ? "/reset-password" : "/habits";
+      return NextResponse.redirect(new URL(next, request.url));
+    }
+  }
+
+  return NextResponse.redirect(new URL("/login?error=link", request.url));
+}
