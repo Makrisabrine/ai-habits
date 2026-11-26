@@ -3,11 +3,166 @@
 @theme inline {
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --color-brand-950: #10102b;
+  --color-brand-900: #171737;
+  --color-brand-800: #28274f;
+  --color-brand-700: #514fb4;
+  --color-brand-600: #7168f4;
+  --color-brand-500: #8178fa;
+  --color-brand-400: #29c8c7;
+  --color-brand-300: #6bded4;
+  --color-brand-100: #292849;
+  --color-brand-50: #1b1b3c;
+  --color-slate-50: #14142e;
+  --color-slate-100: #1b1b38;
+  --color-slate-200: #302f50;
+  --color-slate-300: #4b4a67;
+  --color-slate-400: #8a88a6;
+  --color-slate-500: #aaa8c2;
+  --color-slate-600: #c3c1d9;
+  --color-slate-700: #dddbe9;
+  --color-slate-800: #efedfa;
+  --color-slate-900: #f7f6ff;
+  --color-slate-950: #ffffff;
+  --color-brand-coral: #ff654f;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: #f8fafc;
-  color: #0f172a;
+  background:
+    radial-gradient(ellipse at 8% 0%, rgb(113 104 244 / 17%), transparent 34rem),
+    radial-gradient(ellipse at 94% 24%, rgb(41 200 199 / 10%), transparent 30rem),
+    #10102b;
+  color: #f7f6ff;
+}
+
+::selection {
+  background: rgb(113 104 244 / 22%);
+  color: #ffffff;
+}
+
+.page-enter {
+  animation: page-enter 420ms ease-out both;
+}
+
+.card {
+  background-color: rgb(23 23 55 / 94%);
+  border-color: rgb(185 195 255 / 18%);
+  box-shadow: 0 14px 36px rgb(0 0 0 / 18%);
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.card:hover {
+  border-color: rgb(113 104 244 / 55%);
+  box-shadow: 0 18px 42px rgb(0 0 0 / 26%);
+  transform: translateY(-2px);
+}
+
+.surface {
+  background-color: rgb(23 23 55 / 94%);
+  border-color: rgb(185 195 255 / 18%);
+  box-shadow: 0 12px 30px rgb(0 0 0 / 16%);
+}
+
+.text-brand-950 {
+  color: #f7f6ff;
+}
+
+.text-brand-900 {
+  color: #eceaff;
+}
+
+.text-brand-800 {
+  color: #d8d5fa;
+}
+
+.text-brand-700 {
+  color: #b9b3ff;
+}
+
+.text-slate-300 {
+  color: #c3c1d9;
+}
+
+.bg-white.text-brand-950 {
+  color: #10102b;
+}
+
+input,
+select,
+textarea {
+  background-color: #171737;
+  border-color: rgb(185 195 255 / 25%);
+  color: #f7f6ff;
+}
+
+input[type="range"] {
+  background-color: transparent;
+  border-color: transparent;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #8a88a6;
+}
+
+select option {
+  background-color: #171737;
+  color: #f7f6ff;
+}
+
+input,
+select,
+textarea,
+button,
+a {
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    background-color 160ms ease,
+    color 160ms ease,
+    transform 160ms ease;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid #7168f4;
+  outline-offset: 3px;
+}
+
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 /* Le PDF du module 3 : on imprime /report, sans lib PDF.
@@ -18,6 +173,10 @@ body {
   }
   body {
     background: #fff;
+    color: #0f172a;
+  }
+  .page-enter {
+    animation: none;
   }
   .print-page {
     max-width: none;
@@ -25,7 +184,17 @@ body {
   }
   .card {
     break-inside: avoid;
+    background: #fff;
     box-shadow: none;
     border: 1px solid #e2e8f0;
+  }
+  .surface {
+    background: #fff;
+    box-shadow: none;
+    border: 1px solid #e2e8f0;
+  }
+  .print-page,
+  .print-page * {
+    color: #0f172a !important;
   }
 }

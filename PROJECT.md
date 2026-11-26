@@ -1,4 +1,4 @@
-# AI Habits & Symptoms
+# Athar Habits & Symptoms
 
 Appli web Next.js (PWA) : l'utilisateur consigne ses habitudes quotidiennes (sommeil, nutrition, activité, écran), l'IA croise les données pour détecter des tendances et prédire les baisses d'énergie.
 
@@ -77,6 +77,9 @@ MongoDB est sans schéma : on reste large et plat. `userId` = l'UUID Supabase (`
   // volet Device (Sabrine)
   screenTime: 240,              // minutes
   socialTime: 90,               // minutes
+  videoTime: 60,                // minutes
+  gamingTime: 30,               // minutes
+  workTime: 45,                 // minutes
   steps: 6000,
 
   createdAt: Date
@@ -110,7 +113,7 @@ app/
   signup/page.tsx           # Aziz
   profile/page.tsx          # Aziz — objectifs santé
   today/page.tsx            # Siwar + Sabrine — saisie du jour
-  dashboard/page.tsx        # Siwar + Sabrine — graphiques 7/30/90j
+  dashboard/page.tsx        # Siwar + Sabrine — graphiques, tendances hebdo et catégories
   insights/page.tsx         # Azer — corrélations + conseils IA
   report/page.tsx           # Azer — page imprimable (PDF)
   coach/page.tsx            # Maher — chat
@@ -181,7 +184,7 @@ Les briques déjà disponibles :
 |---|---|---|---|
 | 1 | Auth & profils | **Aziz** | `/login`, `/signup`, `/profile`, `lib/auth.ts`, collection `profiles` |
 | 2a | Saisie Device | **Sabrine** | champs écran/social/pas dans `/today` + leurs graphiques sur `/dashboard` |
-| 2b | Saisie Habit tracker | **Siwar** | formulaire `/today`, rappels (notification navigateur), graphiques 7/30/90j |
+| 2b | Saisie Habit tracker | **Siwar** | formulaire `/today`, graphiques 7/30/90j et suivi hebdomadaire |
 | 3 | Analyse prédictive & rapport | **Azer** | `lib/stats.ts`, `actions/insights.ts`, `/insights`, `/report` imprimable |
 | 4 | Coach IA | **Maher** | `/coach` + `api/chat` : lit `entries` + dernier `insights` comme contexte |
 
@@ -246,7 +249,6 @@ Squelette complet livré, les 5 modules ont une version qui tourne de bout en bo
 - [x] MongoDB installé, actif, joignable depuis Windows — couche données validée de bout en bout
 - [x] Moteur d'analyse vérifié hors UI (`npm run check`) : 5 corrélations fortes retrouvées, dont le café tardif à -0.66
 - [ ] **Remplir Supabase + clé IA dans `.env.local`** — seul reste bloquant
-- [ ] Notifications de rappel (Siwar) — `Notification.requestPermission()`, non commencé
 - [ ] Manifest PWA
 
 **Si le temps manque demain, on coupe dans cet ordre :** notifications de rappel → manifest PWA → graphique 90 jours.
@@ -273,3 +275,6 @@ Squelette complet livré, les 5 modules ont une version qui tourne de bout en bo
 ## 10. Hors périmètre (assumé)
 
 Pas de rôles/admin, pas de reset password, pas de multi-langue, pas d'offline PWA réel (juste le manifest), pas d'upload de fichiers, pas de tests automatisés.
+deploy
+npm i -g vercel
+vercel logs YOUR_DEPLOYMENT_URL

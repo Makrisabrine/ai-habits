@@ -22,7 +22,7 @@ export default async function ReportPage() {
     return (
       <Empty>
         Aucune analyse disponible. Lance d&apos;abord{" "}
-        <Link href="/insights" className="font-medium text-slate-900 underline">
+        <Link href="/insights" className="font-medium text-brand-700 underline decoration-brand-300 underline-offset-4">
           l&apos;analyse IA
         </Link>
         .
@@ -43,8 +43,8 @@ export default async function ReportPage() {
       </div>
 
       <header className="border-b border-slate-300 pb-4">
-        <h1 className="text-xl font-semibold text-slate-900">
-          Rapport de suivi — habitudes et symptômes
+        <h1 className="text-xl font-semibold text-brand-950">
+          Athar Habits — rapport de suivi des habitudes et symptômes
         </h1>
         <dl className="mt-2 grid grid-cols-2 gap-x-6 gap-y-1 text-sm text-slate-600 sm:grid-cols-3">
           <Meta label="Identifiant patient" value={anonId} />
@@ -65,7 +65,10 @@ export default async function ReportPage() {
             <Row label="Niveau de stress" value={`${stats.stress} / 10`} />
             <Row label="Consommation de caféine" value={`${stats.caffeine} / jour`} />
             <Row label="Temps d'écran" value={`${stats.screenTime} min / jour`} target={`seuil ${profile.goals.screenTimeMax} min`} />
-            <Row label="Dont réseaux sociaux" value={`${stats.socialTime} min / jour`} />
+            <Row label="Réseaux sociaux" value={`${stats.socialTime} min / jour`} />
+            <Row label="Vidéo" value={dailyMinutes(stats.videoTime)} />
+            <Row label="Jeux vidéo" value={dailyMinutes(stats.gamingTime)} />
+            <Row label="Travail sur écran" value={dailyMinutes(stats.workTime)} />
             <Row label="Activité physique" value={`${stats.steps} pas / jour`} />
           </tbody>
         </table>
@@ -127,7 +130,7 @@ export default async function ReportPage() {
       </Section>
 
       <footer className="mt-8 border-t border-slate-300 pt-4 text-xs text-slate-500">
-        Document généré automatiquement par AI Habits & Symptoms à partir des déclarations de
+        Document généré automatiquement par Athar Habits &amp; Symptoms à partir des déclarations de
         l&apos;utilisateur. Les corrélations sont statistiques et ne constituent pas un diagnostic
         médical.
       </footer>
@@ -137,8 +140,8 @@ export default async function ReportPage() {
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <section className="card mt-6 rounded-lg border border-slate-200 bg-white p-5">
-      <h2 className="mb-3 font-semibold text-slate-900">{title}</h2>
+    <section className="card mt-6 rounded-2xl border border-brand-100 bg-white p-5">
+      <h2 className="mb-3 font-semibold text-brand-950">{title}</h2>
       {children}
     </section>
   );
@@ -157,8 +160,12 @@ function Row({ label, value, target }: { label: string; value: string; target?: 
   return (
     <tr>
       <td className="py-2 text-slate-600">{label}</td>
-      <td className="py-2 text-right font-medium text-slate-900">{value}</td>
+      <td className="py-2 text-right font-medium text-brand-950">{value}</td>
       <td className="py-2 pl-4 text-right text-xs text-slate-400">{target ?? ""}</td>
     </tr>
   );
+}
+
+function dailyMinutes(value: number | null) {
+  return value === null ? "Non renseigné" : `${value} min / jour`;
 }

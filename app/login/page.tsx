@@ -8,14 +8,18 @@ export default async function LoginPage({
 }: {
   searchParams: Promise<{ check?: string }>;
 }) {
-  if (await getUser()) redirect("/today");
+  if (await getUser()) redirect("/habits");
   const { check } = await searchParams;
 
   return (
-    <div className="mx-auto max-w-sm">
-      <h1 className="mb-6 text-2xl font-semibold">Connexion</h1>
+    <div className="mx-auto max-w-md">
+      <div className="mb-6">
+        <p className="text-xs font-semibold tracking-[0.16em] text-brand-600">ATHAR HABITS</p>
+        <h1 className="mt-2 text-3xl font-semibold tracking-tight text-brand-950">Connexion</h1>
+        <p className="mt-2 text-sm text-slate-500">Retrouve tes suivis et tes tendances personnelles.</p>
+      </div>
       {check && (
-        <p className="mb-4 rounded-md bg-amber-50 px-3 py-2 text-sm text-amber-800">
+        <p className="mb-4 rounded-xl border border-amber-400/30 bg-amber-950/40 px-4 py-3 text-sm text-amber-200">
           Compte créé. Vérifie ta boîte mail pour confirmer, puis connecte-toi.
         </p>
       )}

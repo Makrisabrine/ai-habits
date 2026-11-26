@@ -8,19 +8,22 @@ export type Entry = {
   date: string; // "YYYY-MM-DD"
 
   // volet Habit tracker (Siwar)
-  sleepHours: number; // heures
-  sleepQuality: number; // 1-5
-  caffeine: number; // nb de cafés
-  lastCaffeineHour: number; // 0-23
-  meals: number;
-  energy: number; // 1-10
-  stress: number; // 1-10
-  symptoms: string[];
+  sleepHours?: number; // heures
+  sleepQuality?: number; // 1-5
+  caffeine?: number; // nb de cafés
+  lastCaffeineHour?: number; // 0-23
+  meals?: number;
+  energy?: number; // 1-10
+  stress?: number; // 1-10
+  symptoms?: string[];
 
   // volet Device (Sabrine)
-  screenTime: number; // minutes
-  socialTime: number; // minutes
-  steps: number;
+  screenTime?: number; // minutes
+  socialTime?: number; // minutes
+  videoTime?: number; // minutes
+  gamingTime?: number; // minutes
+  workTime?: number; // minutes
+  steps?: number;
 
   createdAt?: Date;
 };
@@ -65,6 +68,9 @@ export const FIELDS = [
   { key: "stress", label: "Niveau de stress", min: 1, max: 10, step: 1, unit: "/10", group: "habit" },
   { key: "screenTime", label: "Temps d'écran", min: 0, max: 960, step: 10, unit: "min", group: "device" },
   { key: "socialTime", label: "Réseaux sociaux", min: 0, max: 600, step: 10, unit: "min", group: "device" },
+  { key: "videoTime", label: "Vidéo", min: 0, max: 960, step: 10, unit: "min", group: "device" },
+  { key: "gamingTime", label: "Jeux vidéo", min: 0, max: 960, step: 10, unit: "min", group: "device" },
+  { key: "workTime", label: "Travail sur écran", min: 0, max: 960, step: 10, unit: "min", group: "device" },
   { key: "steps", label: "Pas", min: 0, max: 30000, step: 500, unit: "", group: "device" },
 ] as const;
 

@@ -17,13 +17,15 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
       <Field name="password" label="Mot de passe" type="password" required placeholder="••••••" />
 
       {state?.error && (
-        <p className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">{state.error}</p>
+        <p className="rounded-xl border border-red-400/30 bg-red-950/40 px-3 py-2 text-sm text-red-200">
+          {state.error}
+        </p>
       )}
 
       <button
         type="submit"
         disabled={pending}
-        className="w-full rounded-md bg-slate-900 px-4 py-2.5 font-medium text-white hover:bg-slate-700 disabled:opacity-50"
+        className="w-full rounded-xl bg-brand-600 px-4 py-3 font-semibold text-white shadow-lg shadow-brand-600/15 hover:-translate-y-0.5 hover:bg-brand-500 disabled:cursor-not-allowed disabled:opacity-50"
       >
         {pending ? "..." : mode === "login" ? "Se connecter" : "Créer mon compte"}
       </button>
@@ -32,14 +34,14 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
         {mode === "login" ? (
           <>
             Pas de compte ?{" "}
-            <Link href="/signup" className="font-medium text-slate-900 underline">
+            <Link href="/signup" className="font-semibold text-brand-700 underline decoration-brand-300 underline-offset-4">
               Inscription
             </Link>
           </>
         ) : (
           <>
             Déjà inscrit ?{" "}
-            <Link href="/login" className="font-medium text-slate-900 underline">
+            <Link href="/login" className="font-semibold text-brand-700 underline decoration-brand-300 underline-offset-4">
               Connexion
             </Link>
           </>
@@ -64,13 +66,13 @@ function Field({
 }) {
   return (
     <label className="block">
-      <span className="text-sm font-medium text-slate-700">{label}</span>
+      <span className="text-sm font-medium text-brand-800">{label}</span>
       <input
         name={name}
         type={type}
         required={required}
         placeholder={placeholder}
-        className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 outline-none focus:border-slate-900"
+        className="mt-2 w-full rounded-xl border border-brand-100 bg-white px-3 py-2.5 outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-600/10"
       />
     </label>
   );

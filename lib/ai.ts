@@ -46,7 +46,7 @@ async function askOpenRouter(messages: Msg[], system?: string) {
       "Content-Type": "application/json",
       Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
       "HTTP-Referer": "http://localhost:3100",
-      "X-Title": "AI Habits & Symptoms",
+      "X-Title": "Athar Habits",
     },
     body: JSON.stringify({
       model: process.env.OPENROUTER_MODEL || "nvidia/nemotron-3.5-super-vl:free",

@@ -65,10 +65,18 @@ async function main() {
     meals: Math.round(rnd(2, 4)),
     screenTime: Math.round(rnd(90, 480) / 10) * 10,
     socialTime: 0,
+    videoTime: 0,
+    gamingTime: 0,
+    workTime: 0,
     steps: Math.round(rnd(1500, 13000) / 100) * 100,
   }));
 
-  for (const d of days) d.socialTime = Math.round(d.screenTime * rnd(0.25, 0.6) / 10) * 10;
+  for (const d of days) {
+    d.socialTime = Math.round(d.screenTime * rnd(0.18, 0.28) / 10) * 10;
+    d.videoTime = Math.round(d.screenTime * rnd(0.2, 0.32) / 10) * 10;
+    d.gamingTime = Math.round(d.screenTime * rnd(0.05, 0.14) / 10) * 10;
+    d.workTime = Math.max(0, d.screenTime - d.socialTime - d.videoTime - d.gamingTime);
+  }
 
   const entries = days.map((d, i) => {
     const prev = days[i - 1];
@@ -114,6 +122,9 @@ async function main() {
       symptoms,
       screenTime: d.screenTime,
       socialTime: d.socialTime,
+      videoTime: d.videoTime,
+      gamingTime: d.gamingTime,
+      workTime: d.workTime,
       steps: d.steps,
       createdAt: new Date(),
     };

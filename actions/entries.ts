@@ -10,33 +10,45 @@ import { addDays } from "@/lib/stats";
  * Saisie du jour — fusionne les champs de Siwar (habits) et Sabrine (device)
  * dans un seul document par (userId, date). Upsert : re-soumettre met à jour.
  */
-export async function saveEntry(form: FormData) {
+export async function saveHabitEntry(form: FormData) {
+  await saveEntryGroup(form, "habit");
+}
+
+export async function saveDeviceEntry(form: FormData) {
+  await saveEntryGroup(form, "device");
+}
+
+async function saveEntryGroup(form: FormData, group: "habit" | "device") {
   const user = await requireUser();
   const date = String(form.get("date") || today());
 
   const values: Record<string, number> = {};
-  for (const f of FIELDS) {
+  for (const f of FIELDS.filter((field) => field.group === group)) {
     const raw = form.get(f.key);
     if (raw === null || raw === "") continue;
     values[f.key] = Math.min(f.max, Math.max(f.min, Number(raw) || 0));
   }
 
-  const symptoms = String(form.get("symptoms") ?? "")
-    .split(",")
-    .map((s) => s.trim())
-    .filter(Boolean);
+  const setValues: Record<string, number | string[]> = { ...values };
+  if (group === "habit") {
+    setValues.symptoms = String(form.get("symptoms") ?? "")
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean);
+  }
 
   const db = await getDb();
   await db.collection("entries").updateOne(
     { userId: user.id, date },
     {
-      $set: { ...values, symptoms },
+      $set: setValues,
       $setOnInsert: { userId: user.id, date, createdAt: new Date() },
     },
     { upsert: true }
   );
 
-  revalidatePath("/today");
+  revalidatePath("/habits");
+  revalidatePath("/devices");
   revalidatePath("/dashboard");
   revalidatePath("/insights");
 }
@@ -44,7 +56,7 @@ export async function saveEntry(form: FormData) {
 /** Les N derniers jours, triés du plus ancien au plus récent. */
 export async function getEntries(range = 30): Promise<Entry[]> {
   const user = await requireUser();
-  const from = addDays(today(), -range);
+  const from = addDays(today(), 1 - range);
 
   const db = await getDb();
   const docs = await db

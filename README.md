@@ -34,3 +34,15 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Habit and device tracking
+
+The daily forms are split between `/habits` and `/devices`. Device values are entered manually; this PWA does not read phone sensors or screen-time data. The old `/today` URL redirects to `/habits`.
+
+## Dashboard
+
+The dashboard prioritizes habit metrics and compares this week with the same days of the previous week. It includes a screen-time versus sleep-quality scatter plot and a category donut for social media, video, gaming, and work screen time.
+
+Device-category durations are entered manually in minutes. Existing entries without the new category fields remain valid and appear in the category chart once those values are recorded.
+
+Push reminders are no longer part of the app. If an earlier deployment created QStash schedules, cancel the `daily-reminder-*` schedules in the Upstash console and remove the old VAPID/QStash environment variables, including `APP_URL` if it was only used for reminders. The service worker unregisters itself when an existing installation next visits the app.

@@ -21,19 +21,19 @@ export default async function InsightsPage() {
           <select
             name="range"
             defaultValue="30"
-            className="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm"
+            className="rounded-xl border border-brand-100 bg-white px-3 py-2 text-sm focus:border-brand-500 focus:ring-4 focus:ring-brand-600/10"
           >
             <option value="7">7 jours</option>
             <option value="30">30 jours</option>
             <option value="90">90 jours</option>
           </select>
-          <button className="rounded-md bg-slate-900 px-4 py-1.5 text-sm font-medium text-white hover:bg-slate-700">
+          <button className="rounded-xl bg-brand-600 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-500">
             Lancer l&apos;analyse
           </button>
         </form>
 
         {provider === "none" && (
-          <span className="text-sm text-amber-700">
+          <span className="text-sm text-amber-300">
             Aucune clé IA configurée — les corrélations marchent, pas les conseils.
           </span>
         )}
@@ -62,7 +62,7 @@ export default async function InsightsPage() {
             <ul className="space-y-3">
               {insight.advice.map((a, i) => (
                 <li key={i} className="flex gap-3">
-                  <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-slate-900 text-xs font-medium text-white">
+                  <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-brand-600 text-xs font-medium text-white">
                     {i + 1}
                   </span>
                   <span className="text-slate-700">{a}</span>
@@ -95,7 +95,7 @@ export default async function InsightsPage() {
               timeStyle: "short",
             })}{" "}
             ·{" "}
-            <Link href="/report" className="font-medium text-slate-900 underline">
+            <Link href="/report" className="font-medium text-brand-700 underline decoration-brand-300 underline-offset-4">
               Générer le rapport pour un professionnel de santé
             </Link>
           </p>
@@ -118,7 +118,7 @@ function CorrelationRow({ c }: { c: Correlation }) {
       <div className="mt-2 flex items-center gap-3">
         <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-slate-100">
           <div
-            className={`h-full rounded-full ${negative ? "bg-red-400" : "bg-emerald-500"}`}
+            className={`h-full rounded-full ${negative ? "bg-brand-coral" : "bg-brand-400"}`}
             style={{ width: `${pct}%` }}
           />
         </div>

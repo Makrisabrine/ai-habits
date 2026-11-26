@@ -50,7 +50,7 @@ function buildSystem(entries: Entry[], insight: Insight | null) {
     )
     .join("\n");
 
-  return `Tu es le coach santé personnel de cet utilisateur dans l'application AI Habits & Symptoms.
+  return `Tu es le coach santé personnel de cet utilisateur dans l'application Athar Habits & Symptoms.
 
 Ses 7 derniers jours :
 ${recent || "aucune donnée saisie"}

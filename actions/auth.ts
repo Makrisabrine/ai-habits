@@ -41,7 +41,7 @@ export async function signUp(_prev: FormState, form: FormData): Promise<FormStat
   if (!data.session) redirect("/login?check=1");
 
   revalidatePath("/", "layout");
-  redirect("/today");
+  redirect("/habits");
 }
 
 export async function signIn(_prev: FormState, form: FormData): Promise<FormState> {
@@ -54,7 +54,7 @@ export async function signIn(_prev: FormState, form: FormData): Promise<FormStat
   if (error) return { error: error.message };
 
   revalidatePath("/", "layout");
-  redirect("/today");
+  redirect("/habits");
 }
 
 export async function signOut() {

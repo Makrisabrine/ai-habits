@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 360">
+  <defs>
+    <linearGradient id="orb" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#7168f4"/>
+      <stop offset="1" stop-color="#29c8c7"/>
+    </linearGradient>
+  </defs>
+  <rect width="960" height="360" rx="34" fill="#10102b"/>
+  <circle cx="205" cy="174" r="116" fill="url(#orb)"/>
+  <circle cx="264" cy="111" r="65" fill="#10102b"/>
+  <path d="M264 63l9 23 23 9-23 9-9 23-9-23-23-9 23-9z" fill="#ff654f"/>
+  <path d="M98 176h67l18-31 27 78 24-54 15 7h69" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="13"/>
+  <text x="365" y="156" fill="#fff" font-family="Arial, Helvetica, sans-serif" font-size="68" font-weight="700">Athar Habits</text>
+  <text x="369" y="203" fill="#35d1c7" font-family="Arial, Helvetica, sans-serif" font-size="23" font-weight="700" letter-spacing="10">&amp; SYMPTOMS</text>
+  <text x="369" y="273" fill="#b9c3ff" font-family="Arial, Helvetica, sans-serif" font-size="21">Comprends ton énergie, anticipe tes baisses.</text>
+</svg>

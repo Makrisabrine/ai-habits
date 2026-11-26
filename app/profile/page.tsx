@@ -41,11 +41,12 @@ export default async function ProfilePage() {
             step={10}
           />
 
-          <button className="w-full rounded-md bg-slate-900 px-4 py-2.5 font-medium text-white hover:bg-slate-700">
+          <button className="w-full rounded-xl bg-brand-600 px-4 py-3 font-semibold text-white shadow-lg shadow-brand-600/15 hover:-translate-y-0.5 hover:bg-brand-500">
             Enregistrer
           </button>
         </form>
       </Card>
+
     </div>
   );
 }
@@ -77,7 +78,7 @@ function Field({
         min={min}
         max={max}
         step={step}
-        className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 outline-none focus:border-slate-900"
+        className="mt-2 w-full rounded-xl border border-brand-100 bg-white px-3 py-2.5 outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-600/10"
       />
     </label>
   );

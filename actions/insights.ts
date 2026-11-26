@@ -80,7 +80,7 @@ async function buildAdvice({ correlations, prediction, stats, profile, range }: 
 
   const prompt = `Données d'un utilisateur sur ${range} jours (${stats.days} jours saisis).
 
-Moyennes : énergie ${stats.energy}/10, sommeil ${stats.sleepHours}h (qualité ${stats.sleepQuality}/5), ${stats.caffeine} cafés/jour, stress ${stats.stress}/10, écran ${stats.screenTime} min/jour dont ${stats.socialTime} min de réseaux sociaux, ${stats.steps} pas/jour.
+Moyennes : énergie ${stats.energy}/10, sommeil ${stats.sleepHours}h (qualité ${stats.sleepQuality}/5), ${stats.caffeine} cafés/jour, stress ${stats.stress}/10, écran ${stats.screenTime} min/jour (réseaux ${stats.socialTime} min, vidéo ${stats.videoTime ?? "non renseigné"} min, jeux ${stats.gamingTime ?? "non renseigné"} min, travail ${stats.workTime ?? "non renseigné"} min), ${stats.steps} pas/jour.
 Objectifs déclarés : ${profile.goals.sleepHours}h de sommeil, énergie cible ${profile.goals.energyTarget}/10, écran max ${profile.goals.screenTimeMax} min.
 Symptômes les plus fréquents : ${stats.topSymptoms.map((s) => `${s.name} (${s.count}x)`).join(", ") || "aucun"}.
 

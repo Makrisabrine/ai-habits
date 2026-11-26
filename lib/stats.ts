@@ -131,6 +131,10 @@ export function predictTomorrowEnergy(entries: Entry[]) {
 export function summarize(entries: Entry[]) {
   const num = (k: keyof Entry) =>
     entries.map((e) => e[k]).filter((v): v is number => typeof v === "number");
+  const averageWhenRecorded = (key: keyof Entry) => {
+    const values = num(key);
+    return values.length ? Math.round(mean(values)) : null;
+  };
 
   return {
     days: entries.length,
@@ -141,6 +145,9 @@ export function summarize(entries: Entry[]) {
     stress: round(mean(num("stress")), 1),
     screenTime: Math.round(mean(num("screenTime"))),
     socialTime: Math.round(mean(num("socialTime"))),
+    videoTime: averageWhenRecorded("videoTime"),
+    gamingTime: averageWhenRecorded("gamingTime"),
+    workTime: averageWhenRecorded("workTime"),
     steps: Math.round(mean(num("steps"))),
     topSymptoms: topSymptoms(entries),
   };

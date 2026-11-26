@@ -11,11 +11,16 @@ export async function getProfile(): Promise<Profile> {
   const doc = await db.collection<Profile>("profiles").findOne({ userId: user.id });
 
   if (doc) {
-    const { _id, ...p } = doc;
-    return p as Profile;
+    const { _id, ...profile } = doc;
+    return {
+      userId: profile.userId,
+      email: profile.email,
+      name: profile.name,
+      goals: profile.goals,
+      createdAt: profile.createdAt,
+    };
   }
 
-  // Profil manquant (compte créé avant le module 1) : on en fabrique un.
   return {
     userId: user.id,
     email: user.email ?? "",
@@ -45,5 +50,6 @@ export async function saveProfile(form: FormData) {
   );
 
   revalidatePath("/profile");
+  revalidatePath("/dashboard");
   revalidatePath("/insights");
 }
