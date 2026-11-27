@@ -1,8 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-
-type Msg = { role: "user" | "assistant"; content: string };
+import type { ChatMessage } from "@/lib/types";
 
 const SUGGESTIONS = [
   "Pourquoi je suis fatigué en ce moment ?",
@@ -10,15 +9,15 @@ const SUGGESTIONS = [
   "Comment améliorer mon sommeil cette semaine ?",
 ];
 
-export function Chat() {
-  const [messages, setMessages] = useState<Msg[]>([]);
+export function Chat({ initialMessages }: { initialMessages: ChatMessage[] }) {
+  const [messages, setMessages] = useState<ChatMessage[]>(initialMessages);
   const [pending, setPending] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   async function send(content: string) {
     if (!content.trim() || pending) return;
 
-    const next: Msg[] = [...messages, { role: "user", content }];
+    const next: ChatMessage[] = [...messages, { role: "user", content }];
     setMessages(next);
     setPending(true);
 

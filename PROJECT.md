@@ -43,7 +43,7 @@ OPENROUTER_MODEL=nvidia/nemotron-3.5-super-vl:free
 
 ---
 
-## 3. Modèle de données — 3 collections, c'est tout
+## 3. Modèle de données — 4 collections, c'est tout
 
 MongoDB est sans schéma : on reste large et plat. `userId` = l'UUID Supabase (`user.id`).
 
@@ -101,6 +101,21 @@ Index unique : `{ userId: 1, date: 1 }` → un seul doc par jour, on fait un `up
 }
 ```
 
+### `conversations` — historique du coach (Maher)
+
+```js
+{
+  userId: "uuid-supabase",            // unique, une seule conversation par utilisateur
+  messages: [
+    { role: "user", content: "..." },
+    { role: "assistant", content: "..." }
+  ],                                  // 60 messages max (les plus anciens sont supprimés)
+  updatedAt: Date
+}
+```
+
+La page `/coach` lit cette collection au rendu : la conversation survit à la navigation, au rechargement et à une déconnexion/reconnexion. La route `/api/chat` n'ajoute que le dernier message du navigateur à l'historique serveur, puis sauvegarde la réponse.
+
 ---
 
 ## 4. Arborescence
@@ -124,7 +139,8 @@ lib/
   auth.ts                   # requireUser() / getUser()
   supabase/client.ts        # client navigateur
   supabase/server.ts        # client serveur (cookies)
-  ai.ts                     # askAI() — bascule Groq/Gemini automatique
+  chat.ts                   # historique du coach dans MongoDB (1 conversation/userId)
+  ai.ts                     # askAI() — bascule OpenRouter/Groq/Gemini automatique
   stats.ts                  # pearson(), corrélations décalées, prédiction, moyennes
 actions/
   auth.ts                   # Aziz — signUp / signIn / signOut
@@ -175,6 +191,7 @@ Les briques déjà disponibles :
 | `predictTomorrowEnergy(entries)` | `lib/stats.ts` | prédiction + niveau de risque |
 | `summarize(entries)` | `lib/stats.ts` | moyennes + top symptômes |
 | `getEntries(range)` | `actions/entries.ts` | les N derniers jours de l'utilisateur courant |
+| `getConversation(userId)` / `appendMessages()` | `lib/chat.ts` | conversation du coach persistée dans `conversations` (60 messages max, retrouvée après déconnexion) |
 
 ---
 
@@ -204,7 +221,11 @@ Le projet est déjà scaffoldé et les dépendances installées. Il reste 3 chos
 >
 > Pour travailler à cinq sur la **même** base (sinon chacun a sa base vide et le flux complet n'est pas testable à plusieurs), un cluster gratuit Atlas M0 reste la meilleure option : seule `MONGODB_URI` change.
 
-**2. Supabase.** Créer le projet, copier l'URL et la clé `anon` depuis *Project Settings → API*. **Pour la démo : désactiver la confirmation par email** (*Authentication → Sign In / Providers → Email → décocher « Confirm email »*), sinon chaque inscription attend un clic dans la boîte mail.
+**2. Supabase.** Créer le projet, copier l'URL et la clé publishable depuis *Settings → API Keys*. **Pour la démo : désactiver la confirmation par email** (*Authentication → Sign In / Providers → Email → décocher « Confirm email »*), sinon chaque inscription attend un clic dans la boîte mail.
+
+Si la confirmation par email reste activée :
+- *Authentication → URL Configuration* : **Site URL** = `http://localhost:3100`, **Redirect URLs** = `http://localhost:3100/**` (le port 3000 est réservé par Hyper-V, voir §9).
+- *Authentication → Email Templates → Confirm signup* : le lien doit être `{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=email` (et `type=recovery` pour *Reset Password*). Ne pas utiliser `{{ .ConfirmationURL }}` : il envoie le `?code=` sur `/`, qui ne sait pas ouvrir de session. La route `app/auth/confirm/route.ts` échange le `code`/`token_hash` et redirige vers `/habits`.
 
 **3. Clé IA — fait.** OpenRouter avec `nvidia/nemotron-3.5-super-vl:free`. Vérifié de bout en bout via `npm run check` : 4 conseils en français, chacun adossé à une corrélation mesurée. Groq et Gemini restent branchables sans changer une ligne de code applicatif.
 

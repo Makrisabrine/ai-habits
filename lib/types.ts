@@ -57,6 +57,18 @@ export type Insight = {
   prediction: { tomorrowEnergy: number; risk: "faible" | "modéré" | "élevé" };
 };
 
+/** Messages du coach IA, sauvegardés dans la collection `conversations`. */
+export type ChatMessage = {
+  role: "user" | "assistant";
+  content: string;
+};
+
+export type Conversation = {
+  userId: string;
+  messages: ChatMessage[];
+  updatedAt: Date;
+};
+
 /** Champs numériques saisissables, avec leurs bornes pour les formulaires. */
 export const FIELDS = [
   { key: "sleepHours", label: "Heures de sommeil", min: 0, max: 14, step: 0.5, unit: "h", group: "habit" },

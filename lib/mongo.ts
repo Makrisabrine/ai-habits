@@ -29,4 +29,5 @@ export async function ensureIndexes() {
   await db.collection("entries").createIndex({ userId: 1, date: 1 }, { unique: true });
   await db.collection("profiles").createIndex({ userId: 1 }, { unique: true });
   await db.collection("insights").createIndex({ userId: 1, createdAt: -1 });
+  await db.collection("conversations").createIndex({ userId: 1 }, { unique: true });
 }

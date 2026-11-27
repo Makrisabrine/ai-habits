@@ -2,8 +2,9 @@ import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { getDb } from "@/lib/mongo";
 import { askAI } from "@/lib/ai";
+import { appendMessages, getConversation } from "@/lib/chat";
 import { summarize } from "@/lib/stats";
-import type { Entry, Insight } from "@/lib/types";
+import type { ChatMessage, Entry, Insight } from "@/lib/types";
 
 /**
  * MODULE 4 (Maher) — Coach IA.
@@ -18,15 +19,16 @@ export async function POST(req: Request) {
 
   if (!user) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
 
-  const { messages } = (await req.json()) as {
-    messages: { role: "user" | "assistant"; content: string }[];
-  };
+  const body = (await req.json()) as { messages?: ChatMessage[] };
+  const last = Array.isArray(body.messages) ? body.messages.at(-1) : undefined;
 
-  if (!Array.isArray(messages) || messages.length === 0)
-    return NextResponse.json({ error: "messages requis" }, { status: 400 });
+  if (!last || last.role !== "user" || typeof last.content !== "string" || !last.content.trim())
+    return NextResponse.json({ error: "message requis" }, { status: 400 });
+
+  const content = last.content.trim().slice(0, 4000);
 
   const db = await getDb();
-  const [entries, insight] = await Promise.all([
+  const [entries, insight, stored] = await Promise.all([
     db
       .collection<Entry>("entries")
       .find({ userId: user.id })
@@ -34,9 +36,19 @@ export async function POST(req: Request) {
       .limit(7)
       .toArray(),
     db.collection<Insight>("insights").findOne({ userId: user.id }, { sort: { createdAt: -1 } }),
+    getConversation(user.id),
   ]);
 
-  const reply = await askAI(messages.slice(-10), buildSystem(entries, insight));
+  // L'historique vient de MongoDB, pas du navigateur : on ne fait confiance
+  // qu'au dernier message envoyé par le client.
+  const history: ChatMessage[] = [...stored, { role: "user", content }];
+  const reply = await askAI(history.slice(-10), buildSystem(entries, insight));
+
+  await appendMessages(user.id, [
+    { role: "user", content },
+    { role: "assistant", content: reply },
+  ]);
+
   return NextResponse.json({ reply });
 }
 
