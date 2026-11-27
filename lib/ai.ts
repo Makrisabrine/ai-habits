@@ -68,7 +68,8 @@ async function askGroq(messages: Msg[], system?: string) {
       Authorization: `Bearer ${process.env.GROQ_API_KEY}`,
     },
     body: JSON.stringify({
-      model: "llama-3.3-70b-versatile",
+      // llama-3.3-70b-versatile n'est plus accessible (404) : GPT-OSS est le modèle de prod ouvert.
+      model: process.env.GROQ_MODEL || "openai/gpt-oss-120b",
       temperature: 0.4,
       messages: system ? [{ role: "system", content: system }, ...messages] : messages,
     }),
